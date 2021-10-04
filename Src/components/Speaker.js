@@ -30,7 +30,7 @@ const Sessions = ({ sessions }) => {
 
 const SpeakerImage = ({ id, first, last }) => {
   return (
-    <div className="speaker-img d-flex flex-row justify-content-center align-items-center h-300">
+    <div className="speaker-img d-flex flex-row justify-content-center align-items-center h-300 pt-2">
       <img
         className="contain-fit"
         src={`/images/speaker-${id}.jpg`}
@@ -79,7 +79,7 @@ const SpeakerDemographics = ({
   onFavoriteToggle,
 }) => {
   return (
-    <div className="speaker-info">
+    <div className="speaker-info p-2">
       <div className="d-flex justify-content-between mb-3">
         <h3 className="text-truncate w-200">
           {first} {last}
