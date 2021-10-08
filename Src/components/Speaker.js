@@ -1,5 +1,6 @@
 import react, { useState, useContext } from "react";
 import { SpeakerFilterContext } from "../contexts/SpeakerFilterContext";
+import { SpeakerProvider, SpeakerContext } from "../contexts/SpeakerContext";
 
 const Session = ({ title, room }) => {
   return (
@@ -9,8 +10,10 @@ const Session = ({ title, room }) => {
   );
 };
 
-const Sessions = ({ sessions }) => {
+const Sessions = () => {
   const { eventYear } = useContext(SpeakerFilterContext);
+  const { speaker } = useContext(SpeakerContext);
+  const sessions = speaker.sessions;
   return (
     <div className="sessionBox card h-250 mt-4">
       {sessions
@@ -28,7 +31,10 @@ const Sessions = ({ sessions }) => {
   );
 };
 
-const SpeakerImage = ({ id, first, last }) => {
+const SpeakerImage = () => {
+  const {
+    speaker: { id, first, last },
+  } = useContext(SpeakerContext);
   return (
     <div className="speaker-img d-flex flex-row justify-content-center align-items-center h-300 pt-2">
       <img
@@ -42,6 +48,7 @@ const SpeakerImage = ({ id, first, last }) => {
 };
 
 const SpeakerFavorite = ({ favorite, onFavoriteToggle }) => {
+  const { speaker, updateRecord } = useContext(SpeakerContext);
   const [inTransition, setInTransition] = useState(false);
   function doneCallback() {
     setInTransition(false);
@@ -52,12 +59,17 @@ const SpeakerFavorite = ({ favorite, onFavoriteToggle }) => {
       <span
         onClick={() => {
           setInTransition(true);
-          return onFavoriteToggle(doneCallback);
+          updateRecord(
+            { ...speaker, favorite: !speaker.favorite },
+            doneCallback
+          );
         }}
       >
         <i
           className={
-            favorite === true ? "fa fa-star orange" : "fa fa-star-o orange"
+            speaker.favorite === true
+              ? "fa fa-star orange"
+              : "fa fa-star-o orange"
           }
         ></i>{" "}
         Favorite{" "}
@@ -69,15 +81,10 @@ const SpeakerFavorite = ({ favorite, onFavoriteToggle }) => {
   );
 };
 
-const SpeakerDemographics = ({
-  first,
-  last,
-  bio,
-  company,
-  twitterHandle,
-  favorite,
-  onFavoriteToggle,
-}) => {
+const SpeakerDemographics = () => {
+  const {
+    speaker: { first, last, bio, company, twitterHandle, favorite },
+  } = useContext(SpeakerContext);
   return (
     <div className="speaker-info p-2">
       <div className="d-flex justify-content-between mb-3">
@@ -85,10 +92,7 @@ const SpeakerDemographics = ({
           {first} {last}
         </h3>
       </div>
-      <SpeakerFavorite
-        favorite={favorite}
-        onFavoriteToggle={onFavoriteToggle}
-      />
+      <SpeakerFavorite />
       <div>
         <p className="card-description">{bio}</p>
         <div className="social d-flex flex-row mt-4">
@@ -106,17 +110,23 @@ const SpeakerDemographics = ({
   );
 };
 
-const Speaker = ({ speaker, onFavoriteToggle }) => {
-  const { id, first, last, sessions } = speaker;
+const Speaker = ({ speaker, updateRecord, insertRecord, deleteRecord }) => {
   const { showSessions } = useContext(SpeakerFilterContext);
   return (
-    <div className="col-md-6 col-lg-4">
-      <div className="card card-height p-4, mt-4">
-        <SpeakerImage id={id} first={first} last={last} />
-        <SpeakerDemographics {...speaker} onFavoriteToggle={onFavoriteToggle} />
+    <SpeakerProvider
+      speaker={speaker}
+      updateRecord={updateRecord}
+      insertRecord={insertRecord}
+      deleteRecord={deleteRecord}
+    >
+      <div className="col-md-6 col-lg-4">
+        <div className="card card-height p-4, mt-4">
+          <SpeakerImage />
+          <SpeakerDemographics />
+        </div>
+        {showSessions === true ? <Sessions /> : null}
       </div>
-      {showSessions === true ? <Sessions sessions={sessions} /> : null}
-    </div>
+    </SpeakerProvider>
   );
 };
 
