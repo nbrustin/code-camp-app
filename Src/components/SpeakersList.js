@@ -1,12 +1,12 @@
 import { useContext } from "react";
-import { data } from "../../SpeakerData";
 import Speaker from "./Speaker";
-import ReactPlaceholder from "react-placeholder/lib";
-import useRequestDelay, { REQUEST_STATUS } from "../hooks/useRequestDelay";
+import ReactPlaceHolder from "react-placeholder";
+import useRequestRest, { REQUEST_STATUS } from "../hooks/useRequestRest";
+import { data } from "../../SpeakerData";
 import { SpeakerFilterContext } from "../contexts/SpeakerFilterContext";
+import SpeakerAdd from "./SpeakerAdd";
 
-const SpeakersList = () => {
-  //custom hook
+function SpeakersList() {
   const {
     data: speakersData,
     requestStatus,
@@ -14,36 +14,43 @@ const SpeakersList = () => {
     updateRecord,
     insertRecord,
     deleteRecord,
-  } = useRequestDelay(2000, data);
+  } = useRequestRest();
 
   const { searchQuery, eventYear } = useContext(SpeakerFilterContext);
 
   if (requestStatus === REQUEST_STATUS.FAILURE) {
-    return <div className="text-danger">Error: Uh oh!</div>;
+    return (
+      <div className="text-danger">
+        ERROR: <b>loading Speaker Data Failed {error}</b>
+      </div>
+    );
   }
-  // if (isLoading === true) return <div>Loading...</div>;
+
+  //if (isLoading === true) return <div>Loading...</div>
+
   return (
     <div className="container speakers-list">
-      <ReactPlaceholder
+      <ReactPlaceHolder
         type="media"
         rows={15}
         className="speakerslist-placeholder"
         ready={requestStatus === REQUEST_STATUS.SUCCESS}
       >
+        <SpeakerAdd eventYear={eventYear} insertRecord={insertRecord} />
         <div className="row">
           {speakersData
-            .filter((speaker) => {
+            .filter(function (speaker) {
               return (
                 speaker.first.toLowerCase().includes(searchQuery) ||
                 speaker.last.toLowerCase().includes(searchQuery)
               );
             })
-            .filter((speaker) => {
+            .filter(function (speaker) {
               return speaker.sessions.find((session) => {
                 return session.eventYear === eventYear;
               });
             })
-            .map((speaker) => {
+            .map(function (speaker) {
               return (
                 <Speaker
                   key={speaker.id}
@@ -51,13 +58,13 @@ const SpeakersList = () => {
                   updateRecord={updateRecord}
                   insertRecord={insertRecord}
                   deleteRecord={deleteRecord}
-                ></Speaker>
+                />
               );
             })}
         </div>
-      </ReactPlaceholder>
+      </ReactPlaceHolder>
     </div>
   );
-};
+}
 
 export default SpeakersList;
