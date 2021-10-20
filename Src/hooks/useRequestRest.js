@@ -74,11 +74,16 @@ function useRequestRest() {
     delayFunction();
   }
 
+  // The insertRecord code below is corrected per this discussion in the course.
+  //   The ID was not being carried back to state previously
+  //  Also, need to correct useRequestDelay for the same issue which is earlier in the course
+
   function insertRecord(record, doneCallback) {
     const originalRecords = [...data];
     async function delayFunction() {
       try {
-        const results = await axios.post(`${restUrl}/99999`, record);
+        const results = await axios.post
+          (`${restUrl}/99999`, record);
         const { data: insertedRecord } = results;
         const newRecords = [insertedRecord, ...data];
         setData(newRecords);
