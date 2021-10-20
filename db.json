@@ -1,22 +1,6 @@
 {
   "speakers": [
     {
-      "id": "47344",
-      "first": "jane",
-      "last": "smith",
-      "bio": "Bio not entered yet",
-      "sessions": [
-        {
-          "id": "88888",
-          "title": "New Session for jane",
-          "room": {
-            "name": "Main Ballroom"
-          },
-          "eventYear": "2019"
-        }
-      ]
-    },
-    {
       "id": "1269",
       "first": "Arun",
       "last": "Gupta",
