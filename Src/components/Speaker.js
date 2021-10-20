@@ -39,7 +39,7 @@ const ImageWithFallback = ({ src, ...props }) => {
   const onError = () => {
     if (!error) {
       setImgSrc("/images/speaker-99999.jpg");
-      setError(false);
+      setError(true);
     }
   };
 
