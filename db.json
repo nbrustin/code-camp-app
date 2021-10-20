@@ -1,23 +1,6 @@
 {
   "speakers": [
     {
-      "id": "47345",
-      "first": "Janet",
-      "last": "Lewis",
-      "bio": "Bio not entered yet",
-      "sessions": [
-        {
-          "id": "88888",
-          "title": "New Session for Janet",
-          "room": {
-            "name": "Main Ballroom"
-          },
-          "eventYear": "2019"
-        }
-      ],
-      "favorite": true
-    },
-    {
       "id": "1269",
       "first": "Arun",
       "last": "Gupta",
