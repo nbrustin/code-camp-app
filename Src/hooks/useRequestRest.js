@@ -82,6 +82,7 @@ function useRequestRest() {
     const originalRecords = [...data];
     async function delayFunction() {
       try {
+        debugger;
         const results = await axios.post
           (`${restUrl}/99999`, record);
         const { data: insertedRecord } = results;
