@@ -77,7 +77,6 @@ function useRequestDelay(delayTime = 1000, initialData = []) {
     async function delayFunction() {
       try {
         setData(newRecords);
-        debugger;
         await delay(delayTime);
         if (doneCallback) {
           doneCallback();
